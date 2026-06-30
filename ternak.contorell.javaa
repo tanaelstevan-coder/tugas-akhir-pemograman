@@ -1,0 +1,136 @@
+
+    import java.io.*;
+    import java.util.ArrayList;
+
+    public class TernakController {
+
+        private ArrayList<Ternak> data = new ArrayList<>();
+        private final String FILE = "data_peternakan_241011401252.txt";
+
+        public ArrayList<Ternak> getData() {
+            return data;
+        }
+
+        // Tambah
+        public void tambah(Ternak t) {
+            data.add(t);
+        }
+
+        // Tampil
+        public void tampil() {
+            if (data.isEmpty()) {
+                System.out.println("\nData masih kosong.");
+                return;
+            }
+
+            System.out.println("\n==============================");
+            System.out.println("      DATA PETERNAKAN");
+            System.out.println("==============================");
+
+            for (int i = 0; i < data.size(); i++) {
+                Ternak t = data.get(i);
+                System.out.println("Data ke-" + (i + 1));
+                System.out.println("Kode     : " + t.getKode());
+                System.out.println("Jenis    : " + t.getJenis());
+                System.out.println("Jumlah   : " + t.getJumlah());
+                System.out.println("Kondisi  : " + t.getKondisi());
+                System.out.println("Pemilik  : " + t.getPemilik());
+                System.out.println("------------------------------");
+            }
+        }
+
+        // Cari berdasarkan kode
+        public Ternak cari(String kode) {
+            for (Ternak t : data) {
+                if (t.getKode().equalsIgnoreCase(kode)) {
+                    return t;
+                }
+            }
+            return null;
+        }
+
+        // Hapus
+        public boolean hapus(String kode) {
+            Ternak t = cari(kode);
+
+            if (t != null) {
+                data.remove(t);
+                return true;
+            }
+
+            return false;
+        }
+
+        // Simpan ke File
+        public void simpan() {
+
+            try (PrintWriter pw = new PrintWriter(new FileWriter(FILE))) {
+
+                for (Ternak t : data) {
+                    pw.println(t.toString());
+                }
+
+                System.out.println("Data berhasil disimpan.");
+
+            } catch (IOException e) {
+                System.out.println("Gagal menyimpan data!");
+            }
+        }
+
+        // Baca File
+        public void bacaFile() {
+
+            File file = new File(FILE);
+
+            if (!file.exists()) {
+                return;
+            }
+
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+                String baris;
+
+                while ((baris = br.readLine()) != null) {
+
+                    String[] p = baris.split(";");
+
+                    if (p.length == 5) {
+
+                        data.add(new Ternak(
+                                p[0],
+                                p[1],
+                                Integer.parseInt(p[2]),
+                                p[3],
+                                p[4]
+                        ));
+
+                    }
+
+                }
+
+            } catch (Exception e) {
+                System.out.println("Gagal membaca file.");
+            }
+        }
+
+        // Ubah
+        public boolean ubah(String kode, String jenis, int jumlah,
+                String kondisi, String pemilik) {
+
+            Ternak t = cari(kode);
+
+            if (t != null) {
+
+                t.setJenis(jenis);
+                t.setJumlah(jumlah);
+                t.setKondisi(kondisi);
+                t.setPemilik(pemilik);
+
+                return true;
+            }
+
+            return false;
+        }
+
+}
+
