@@ -1,0 +1,17 @@
+public class main {
+     public static void main(String[] args) {
+
+        System.out.println("========================================");
+        System.out.println("   APLIKASI DATA PETERNAKAN");
+        System.out.println("========================================");
+        System.out.println("Nama : TANAEL STEVAN SITOHANG");
+        System.out.println("NIM  : 241011401252");
+        System.out.println("========================================");
+
+        TernakView view = new TernakView();
+        view.menu();
+
+    }
+
+}
+
